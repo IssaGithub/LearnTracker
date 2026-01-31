@@ -1,0 +1,58 @@
+---
+const navItems = [
+  {
+    label: 'Uebersicht',
+    href: '#',
+    iconPath:
+      'M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z'
+  },
+  {
+    label: 'Quests',
+    href: '#',
+    iconPath:
+      'M6 3h12a1 1 0 0 1 1 1v14l-4-3-4 3-4-3-4 3V4a1 1 0 0 1 1-1z'
+  },
+  {
+    label: 'Sammlung',
+    href: '#',
+    iconPath: 'M5 4h14v4H5zM5 10h14v4H5zM5 16h14v4H5z'
+  },
+  {
+    label: 'Einstellungen',
+    href: '#',
+    iconPath:
+      'M12 3l2 3 3 .5-2 2 1 3-3-1.5-3 1.5 1-3-2-2L10 6z'
+  }
+];
+---
+<aside class="hidden w-60 flex-shrink-0 flex-col gap-6 rounded-3xl bg-white p-6 shadow-sm lg:flex">
+  <div class="rounded-2xl bg-indigo-50 px-4 py-3">
+    <p class="text-xs font-semibold uppercase tracking-wide text-indigo-500">
+      Lernwelt
+    </p>
+    <p class="text-lg font-semibold text-indigo-900">LearnTracker</p>
+  </div>
+
+  <nav class="space-y-2">
+    {navItems.map((item) => (
+      <a
+        href={item.href}
+        class="flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium text-slate-600 transition hover:bg-indigo-50 hover:text-indigo-700"
+      >
+        <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-100 text-indigo-600">
+          <svg viewBox="0 0 24 24" class="h-5 w-5 fill-current">
+            <path d={item.iconPath}></path>
+          </svg>
+        </span>
+        <span>{item.label}</span>
+      </a>
+    ))}
+  </nav>
+
+  <div class="mt-auto rounded-2xl bg-amber-50 p-4 text-sm text-amber-700">
+    <p class="font-semibold">Tagesziel</p>
+    <p class="mt-1 text-xs text-amber-600">
+      Sammle heute 120 XP fuer einen Bonus.
+    </p>
+  </div>
+</aside>
