@@ -1,0 +1,131 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Sidebar from '../components/Sidebar.astro';
+import ProgressCard from '../components/ProgressCard.astro';
+import LearningSession from '../components/LearningSession.tsx';
+import type { Task, UserProgress } from '../types/gamification';
+
+const tasks: Task[] = [
+  {
+    id: 'task-1',
+    title: 'Vokabel-Quest',
+    description: 'Lerne 8 neue Begriffe in 5 Minuten.',
+    difficulty: 'easy',
+    xpReward: 40,
+    completed: true
+  },
+  {
+    id: 'task-2',
+    title: 'Mathe-Sprint',
+    description: 'Loese 5 Kopfrechenaufgaben.',
+    difficulty: 'medium',
+    xpReward: 60,
+    completed: false
+  },
+  {
+    id: 'task-3',
+    title: 'Lesepfade',
+    description: 'Lies eine kurze Geschichte und beantworte 3 Fragen.',
+    difficulty: 'hard',
+    xpReward: 80,
+    completed: false
+  }
+];
+
+const userProgress: UserProgress = {
+  level: 4,
+  xp: 180,
+  xpToNextLevel: 250,
+  streakDays: 6
+};
+
+const progressPercent = Math.round(
+  (userProgress.xp / userProgress.xpToNextLevel) * 100
+);
+---
+
+<BaseLayout title="LearnTracker | Dashboard">
+  <div class="mx-auto flex min-h-screen max-w-6xl gap-6 p-6">
+    <Sidebar />
+
+    <main class="flex-1 space-y-6">
+      <header class="rounded-3xl bg-indigo-50 p-6">
+        <p class="text-xs uppercase tracking-wide text-indigo-400">
+          Willkommen zur Lernreise
+        </p>
+        <h1 class="mt-2 text-2xl font-semibold text-indigo-900">
+          Deine Quest des Tages
+        </h1>
+        <p class="mt-2 max-w-2xl text-sm text-indigo-700">
+          Kleine Schritte, grosse Wirkung: Setze dir klare Ziele und feiere
+          jeden Fortschritt.
+        </p>
+      </header>
+
+      <section class="grid gap-6 lg:grid-cols-[1.2fr,0.8fr]">
+        <div class="space-y-6">
+          <div class="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-xs uppercase tracking-wide text-slate-400">
+                  Quest des Tages
+                </p>
+                <h2 class="mt-1 text-lg font-semibold text-slate-800">
+                  Lern-Plan fuer heute
+                </h2>
+              </div>
+              <span class="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
+                {tasks.filter((task) => task.completed).length} / {tasks.length}{' '}
+                erledigt
+              </span>
+            </div>
+
+            <ul class="mt-4 space-y-3 text-sm text-slate-600">
+              {tasks.map((task) => (
+                <li class="flex items-start gap-3 rounded-xl bg-slate-50 px-4 py-3">
+                  <div
+                    class={`mt-1 h-3 w-3 flex-shrink-0 rounded-full ${
+                      task.completed ? 'bg-emerald-400' : 'bg-slate-300'
+                    }`}
+                  ></div>
+                  <div>
+                    <p class="font-semibold text-slate-700">{task.title}</p>
+                    <p class="text-xs text-slate-500">{task.description}</p>
+                    <p class="mt-1 text-xs text-indigo-500">
+                      +{task.xpReward} XP
+                    </p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <LearningSession client:load />
+        </div>
+
+        <div class="space-y-6">
+          <ProgressCard
+            level={userProgress.level}
+            xp={userProgress.xp}
+            xpToNextLevel={userProgress.xpToNextLevel}
+            streakDays={userProgress.streakDays}
+            progressPercent={progressPercent}
+          />
+
+          <div class="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm">
+            <p class="text-xs uppercase tracking-wide text-slate-400">
+              Naechster Meilenstein
+            </p>
+            <h3 class="mt-2 text-lg font-semibold text-slate-800">
+              Bonus-Abzeichen sichern
+            </h3>
+            <p class="mt-2 text-sm text-slate-600">
+              Schaffe zwei weitere Aufgaben, um dein Silber-Abzeichen zu
+              erhalten.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</BaseLayout>
